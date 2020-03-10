@@ -61,6 +61,11 @@ let todoReducer = (state = initialState, action) => {
                 ...state,
                 todoItem: state.todoItem.filter(item => item.id !== action.id)
             };
+        case DEL_TASK:
+            return {
+                ...state,
+                todoTask: state.todoTask.filter(item => item.id !== action.taskId)
+            };
         case RENAME_TODO:
             return {
                 todoItem: state.todoItem.map(item => item.id !== action.id ? item: {...item, title: action.name} )
@@ -92,7 +97,7 @@ export const delTodo = (id) => {
 
 export const delTask = (taskId) => {
     return {
-        type: DEL_TODO, taskId
+        type: DEL_TASK, taskId
     }
 };
 
@@ -134,7 +139,7 @@ export const delTodoPart = (id) => async (dispatch) => {
 
 export const delTodoTask = (listId, taskId) => async (dispatch) => {
     todoAPI.delTask(listId, taskId);
-    dispatch(delTodo(taskId));
+    dispatch(delTask(taskId));
 };
 
 export const renameTodoPart = (id, name) => async (dispatch) => {
