@@ -1,12 +1,18 @@
 import {todoAPI} from "../api/api";
 
+let GET_TODO = "GET_TODO";
 let ADD_TODO = "ADD_TODO";
 let DEL_TODO = "DEL_TODO";
-let GET_TODO = "GET_TODO";
 let RENAME_TODO = "RENAME_TODO";
 
+let GET_TASK = "GET_TASK";
+let ADD_TASK = "ADD_TASK";
+let DEL_TASK = "DEL_TASK";
+let RENAME_TASK = "RENAME_TASK";
+
 let initialState = {
-    todoItem: []
+    todoItem: [],
+    todoTask: []
 };
 
 let todoReducer = (state = initialState, action) => {
@@ -15,6 +21,29 @@ let todoReducer = (state = initialState, action) => {
             return {
                 ...state,
                 todoItem: action.value
+            };
+        case GET_TASK:
+            return {
+                ...state,
+                todoTask: action.value
+            };
+        case ADD_TASK:
+            let addTask = {
+                id: state.todoTask.length + 1,
+                title: action.value,
+                description: null,
+                completed: null,
+                status: null,
+                priority: null,
+                startDate: null,
+                deadline: null,
+                todoListId: action.id,
+                order: null,
+                addedDate: null
+            };
+            return {
+                ...state,
+                todoTask: [addTask, ...state.todoTask]
             };
         case ADD_TODO:
             let addTodoPart = {
@@ -61,9 +90,27 @@ export const delTodo = (id) => {
     }
 };
 
+export const delTask = (taskId) => {
+    return {
+        type: DEL_TODO, taskId
+    }
+};
+
 export const renameTodo = (id, name) => {
     return {
         type: RENAME_TODO, id, name
+    }
+};
+
+export const getTask = (value) => {
+    return {
+        type: GET_TASK, value
+    }
+};
+
+export const addTask = (value) => {
+    return {
+        type: ADD_TASK, value
     }
 };
 
@@ -85,9 +132,26 @@ export const delTodoPart = (id) => async (dispatch) => {
     dispatch(delTodo(id));
 };
 
+export const delTodoTask = (listId, taskId) => async (dispatch) => {
+    todoAPI.delTask(listId, taskId);
+    dispatch(delTodo(taskId));
+};
+
 export const renameTodoPart = (id, name) => async (dispatch) => {
     todoAPI.renameTodo(id, name);
     dispatch(renameTodo(id, name));
+};
+
+export const getTodoTasks = (tasklistid) => async (dispatch) => {
+    let response = await todoAPI.getTasks(tasklistid);
+    if (response.status === 200) {
+        dispatch(getTask(response.data.items));
+    }
+};
+
+export const addTodoTask = (id, title) => async (dispatch) => {
+    await todoAPI.postTask(id, title);
+    dispatch(addTask(title));
 };
 
 export default todoReducer;

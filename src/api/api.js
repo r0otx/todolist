@@ -20,7 +20,16 @@ export const todoAPI = {
     },
     renameTodo(id, name) {
         return instance.put(`todo-lists/${id}`, {title: name})
-    }
+    },
+    getTasks(tasklistid) {
+        return instance.get(`todo-lists/${tasklistid}/tasks`);
+    },
+    postTask(id, title) {
+        return instance.post(`todo-lists/${id}/tasks`, {title});
+    },
+    delTask(listId, taskId) {
+        return instance.delete(`todo-lists/${listId}/tasks/${taskId}`)
+    },
 };
 
 export const authAPI = {

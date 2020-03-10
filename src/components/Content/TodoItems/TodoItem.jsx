@@ -3,14 +3,14 @@ import {makeStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import ExpansionPanel from "@material-ui/core/ExpansionPanel";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import Typography from "@material-ui/core/Typography";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
-import CreateIcon from '@material-ui/icons/Create';
 import Preloader from "../../../common/Preloader";
 import TodoItemPartEdit from "./TodoItemPartEdit/TodoItemPartEdit";
+import TodoTaskItemContainer from "./TodoTaskItemContainer";
+import TodoTaskInputContainer from "./TodoTaskInputContainer";
 
 const useStyles = makeStyles({
     root: {
@@ -61,11 +61,9 @@ const TodoItems = ({renameTodoPart, delTodoPart, getTodoPart, ...props}) => {
                             <TodoItemPartEdit id={item.id} renameTodoPart={renameTodoPart}/>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
-                            <Typography color="textSecondary">
-                                The click event of the nested action will propagate up and expand the panel unless you
-                                explicitly stop it.
-                            </Typography>
+                            <TodoTaskInputContainer id={item.id}/>
                         </ExpansionPanelDetails>
+                        <TodoTaskItemContainer id={item.id}/>
                     </ExpansionPanel>
                 )}
             </div>
