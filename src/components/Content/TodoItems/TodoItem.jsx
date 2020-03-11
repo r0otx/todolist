@@ -9,8 +9,9 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import Preloader from "../../../common/Preloader";
 import TodoItemPartEdit from "./TodoItemPartEdit/TodoItemPartEdit";
-import TodoTaskItemContainer from "./TodoTaskItemContainer";
+import TodoTaskItem from "./TodoTaskItem";
 import TodoTaskInputContainer from "./TodoTaskInputContainer";
+import {getTodoTasks} from "../../../redux/todo-reducer";
 
 const useStyles = makeStyles({
     root: {
@@ -20,7 +21,7 @@ const useStyles = makeStyles({
     },
 });
 
-const TodoItems = ({renameTodoPart, delTodoPart, getTodoPart, ...props}) => {
+const TodoItems = ({renameTodoPart, delTodoPart, getTodoPart, getTodoTasks, delTodoTask, ...props}) => {
 
     useEffect(() => {
         getTodoPart();
@@ -32,7 +33,7 @@ const TodoItems = ({renameTodoPart, delTodoPart, getTodoPart, ...props}) => {
         delTodoPart(id);
     };
 
-    if (props.todoItem.todoItem.length === 0) {
+   if (props.todoItem.todoItem.length === 0) {
         return (
             <div style={{marginTop: "50px"}}>
                 <Preloader/>
@@ -63,7 +64,10 @@ const TodoItems = ({renameTodoPart, delTodoPart, getTodoPart, ...props}) => {
                         <ExpansionPanelDetails>
                             <TodoTaskInputContainer id={item.id}/>
                         </ExpansionPanelDetails>
-                        <TodoTaskItemContainer id={item.id}/>
+                        <TodoTaskItem id={item.id}
+                                          todoTask={props.todoItem.todoTask}
+                                          getTodoTasks={getTodoTasks}
+                                          delTodoTask={delTodoTask}/>
                     </ExpansionPanel>
                 )}
             </div>

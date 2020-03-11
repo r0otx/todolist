@@ -21,13 +21,17 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-const TodoTaskItem = ({getTodoTasks, id, delTodoTask, ...props}) => {
+const TodoTaskItem = ({getTodoTasks, delTodoTask, id, ...props}) => {
 
     const classes = useStyles();
 
     useEffect(() => {
         getTodoTasks(id);
     }, [getTodoTasks]);
+
+    const delTask = (listId, taskId) => {
+        delTodoTask(listId, taskId);
+    };
 
     if (props.todoTask.length === 0) {
         return (
@@ -37,30 +41,30 @@ const TodoTaskItem = ({getTodoTasks, id, delTodoTask, ...props}) => {
         );
     }
 
-    const delTask = (listId, taskId) => {
-        delTodoTask(listId, taskId);
-    };
-
     return (
         <div>
             <div className={classes.demo}>
                 {props.todoTask.map(item =>
-                    <List>
-                        <ListItem>
-                            <ListItemAvatar>
-                                <ListIcon />
-                            </ListItemAvatar>
-                            <ListItemText primary={`${item.title}`} />
-                            <ListItemSecondaryAction>
-                                <IconButton edge="end" aria-label="done">
-                                    <DoneIcon />
-                                </IconButton>
-                                <IconButton onClick={() => delTask(item.todoListId, item.id)} edge="end" aria-label="delete">
-                                    <DeleteIcon />
-                                </IconButton>
-                            </ListItemSecondaryAction>
-                        </ListItem>
-                    </List>
+                {if (id === item.todoListId) {
+                    return (
+                        <List>
+                            <ListItem>
+                                <ListItemAvatar>
+                                    <ListIcon />
+                                </ListItemAvatar>
+                                <ListItemText primary={`${item.title}`} />
+                                <ListItemSecondaryAction>
+                                    <IconButton edge="end" aria-label="done">
+                                        <DoneIcon />
+                                    </IconButton>
+                                    <IconButton onClick={() => delTask(item.todoListId, item.id)} edge="end" aria-label="delete">
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </ListItemSecondaryAction>
+                            </ListItem>
+                        </List>
+                    )
+                }}
                 )}
             </div>
         </div>

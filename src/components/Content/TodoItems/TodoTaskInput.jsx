@@ -7,7 +7,6 @@ import IconButton from "@material-ui/core/IconButton";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import Divider from "@material-ui/core/Divider";
 import SendIcon from "@material-ui/icons/Send";
-import {addTodoTask} from "../../../redux/todo-reducer";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -35,8 +34,6 @@ const TodoTaskInput = ({addTodoTask, id, ...props}) => {
 
     let [state, setState] = useState([]);
 
-    console.log(state);
-
     let handleSubmit = (data) => {
         addTodoTask(id, data.target.todoItem.value);
         data.preventDefault();
@@ -57,6 +54,7 @@ const TodoTaskInput = ({addTodoTask, id, ...props}) => {
                         placeholder="Enter task"
                         inputProps={{ 'aria-label': 'Enter task' }}
                         onChange={handleChange}
+                        value={state}
                     />
                     <IconButton type="reset" className={classes.iconButton} aria-label="search">
                         <HighlightOffIcon />

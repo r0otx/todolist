@@ -36,8 +36,6 @@ const InputBar = (props) => {
 
     let [state, setState] = useState([]);
 
-    console.log(state);
-
     let handleSubmit = (data) => {
         props.addTodoPart(data.target.todoItem.value);
         data.preventDefault();
@@ -58,6 +56,7 @@ const InputBar = (props) => {
                     placeholder="Enter part name"
                     inputProps={{ 'aria-label': 'Enter part name' }}
                     onChange={handleChange}
+                    value={state}
                 />
                 <IconButton type="reset" className={classes.iconButton} aria-label="search">
                     <HighlightOffIcon />

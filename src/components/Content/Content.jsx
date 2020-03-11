@@ -19,7 +19,6 @@ const Content = (props) => {
                 {!props.isAuth
                     ? <AuthContainer/>
                     : <div><InputBarContainer/><TodoItemsContainer /></div>
-
                 }
             </Container>
         </div>

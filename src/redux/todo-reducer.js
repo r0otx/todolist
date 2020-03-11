@@ -1,14 +1,13 @@
 import {todoAPI} from "../api/api";
 
-let GET_TODO = "GET_TODO";
+let SET_TODO = "SET_TODO";
 let ADD_TODO = "ADD_TODO";
 let DEL_TODO = "DEL_TODO";
 let RENAME_TODO = "RENAME_TODO";
 
-let GET_TASK = "GET_TASK";
+let SET_TASK = "SET_TASK";
 let ADD_TASK = "ADD_TASK";
 let DEL_TASK = "DEL_TASK";
-let RENAME_TASK = "RENAME_TASK";
 
 let initialState = {
     todoItem: [],
@@ -17,44 +16,28 @@ let initialState = {
 
 let todoReducer = (state = initialState, action) => {
     switch (action.type) {
-        case GET_TODO:
+        case SET_TODO:
             return {
                 ...state,
                 todoItem: action.value
             };
-        case GET_TASK:
+        case SET_TASK:
+            console.log(action.tasklistid, action.data);
+
             return {
                 ...state,
-                todoTask: action.value
+                todoTask: [...state.todoTask, ...action.data],
+
             };
         case ADD_TASK:
-            let addTask = {
-                id: state.todoTask.length + 1,
-                title: action.value,
-                description: null,
-                completed: null,
-                status: null,
-                priority: null,
-                startDate: null,
-                deadline: null,
-                todoListId: action.id,
-                order: null,
-                addedDate: null
-            };
             return {
                 ...state,
-                todoTask: [addTask, ...state.todoTask]
+                todoTask: [action.value, ...state.todoTask]
             };
         case ADD_TODO:
-            let addTodoPart = {
-                id: action.value.length + 1,
-                title: action.value,
-                addedDate: Date.now,
-                order: 1
-            };
             return {
                 ...state,
-                todoItem: [addTodoPart, ...state.todoItem]
+                todoItem: [action.value.data.item, ...state.todoItem]
             };
         case DEL_TODO:
             return {
@@ -77,9 +60,9 @@ let todoReducer = (state = initialState, action) => {
 
 //Action Creators
 
-export const getTodo = (value) => {
+export const setTodo = (value) => {
     return {
-        type: GET_TODO, value
+        type: SET_TODO, value
     }
 };
 
@@ -107,9 +90,9 @@ export const renameTodo = (id, name) => {
     }
 };
 
-export const getTask = (value) => {
+export const setTask = (tasklistid, data) => {
     return {
-        type: GET_TASK, value
+        type: SET_TASK, tasklistid, data
     }
 };
 
@@ -123,13 +106,13 @@ export const addTask = (value) => {
 export const getTodoPart = () => async (dispatch) => {
     let response = await todoAPI.getTodo();
     if (response.status === 200) {
-        dispatch(getTodo(response.data));
+        dispatch(setTodo(response.data));
     }
 };
 
 export const addTodoPart = (title) => async (dispatch) => {
-    todoAPI.postTodo(title);
-    dispatch(addTodo(title));
+    let response = await todoAPI.postTodo(title);
+    dispatch(addTodo(response.data));
 };
 
 export const delTodoPart = (id) => async (dispatch) => {
@@ -150,13 +133,13 @@ export const renameTodoPart = (id, name) => async (dispatch) => {
 export const getTodoTasks = (tasklistid) => async (dispatch) => {
     let response = await todoAPI.getTasks(tasklistid);
     if (response.status === 200) {
-        dispatch(getTask(response.data.items));
+        dispatch(setTask(tasklistid, response.data.items));
     }
 };
 
 export const addTodoTask = (id, title) => async (dispatch) => {
-    await todoAPI.postTask(id, title);
-    dispatch(addTask(title));
+    let response = await todoAPI.postTask(id, title);
+    dispatch(addTask(response.data.data.item));
 };
 
 export default todoReducer;

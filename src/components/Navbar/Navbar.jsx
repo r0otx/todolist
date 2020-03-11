@@ -6,7 +6,6 @@ import Button from "@material-ui/core/Button";
 import {makeStyles} from "@material-ui/core/styles";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
-import {logout} from "../../redux/auth-reducer";
 
 const useStyles = makeStyles(theme => ({
     root: {
