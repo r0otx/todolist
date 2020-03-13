@@ -22,8 +22,6 @@ let todoReducer = (state = initialState, action) => {
                 todoItem: action.value
             };
         case SET_TASK:
-            console.log(action.tasklistid, action.data);
-
             return {
                 ...state,
                 todoTask: [...state.todoTask, ...action.data],
@@ -51,6 +49,7 @@ let todoReducer = (state = initialState, action) => {
             };
         case RENAME_TODO:
             return {
+                ...state,
                 todoItem: state.todoItem.map(item => item.id !== action.id ? item: {...item, title: action.name} )
             };
         default:

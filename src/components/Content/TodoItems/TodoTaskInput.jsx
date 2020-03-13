@@ -56,7 +56,7 @@ const TodoTaskInput = ({addTodoTask, id, ...props}) => {
                         onChange={handleChange}
                         value={state}
                     />
-                    <IconButton type="reset" className={classes.iconButton} aria-label="search">
+                    <IconButton type="reset" onClick={() => setState('')} className={classes.iconButton} aria-label="search">
                         <HighlightOffIcon />
                     </IconButton>
                     <Divider className={classes.divider} orientation="vertical" />

@@ -6,12 +6,11 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import DeleteForeverIcon from '@material-ui/icons/DeleteForever';
 import Preloader from "../../../common/Preloader";
 import TodoItemPartEdit from "./TodoItemPartEdit/TodoItemPartEdit";
 import TodoTaskItem from "./TodoTaskItem";
 import TodoTaskInputContainer from "./TodoTaskInputContainer";
-import {getTodoTasks} from "../../../redux/todo-reducer";
+import ListIcon from "@material-ui/icons/List";
 
 const useStyles = makeStyles({
     root: {
@@ -28,10 +27,6 @@ const TodoItems = ({renameTodoPart, delTodoPart, getTodoPart, getTodoTasks, delT
     }, [getTodoPart]);
 
     const classes = useStyles();
-
-    let deleteTodo = (id) => {
-        delTodoPart(id);
-    };
 
    if (props.todoItem.todoItem.length === 0) {
         return (
@@ -53,13 +48,11 @@ const TodoItems = ({renameTodoPart, delTodoPart, getTodoPart, getTodoTasks, delT
                             aria-controls={`additional-actions${item.id}-content`}
                             id={`additional-actions${item.id}-header`}>
                             <FormControlLabel
-                                aria-label="Acknowledge"
-                                onClick={() => deleteTodo(item.id)}
-                                onFocus={event => event.stopPropagation()}
-                                control={<DeleteForeverIcon/>}
-                                label={item.title}
-                            />
-                            <TodoItemPartEdit id={item.id} renameTodoPart={renameTodoPart}/>
+                            aria-label="Acknowledge"
+                            control={<ListIcon />}
+                            label={item.title}
+                        />
+                            <TodoItemPartEdit id={item.id} renameTodoPart={renameTodoPart} delTodoPart={delTodoPart}/>
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
                             <TodoTaskInputContainer id={item.id}/>
